@@ -68,7 +68,8 @@ const CourseDetails = () => {
                       <div key={index} className='border border-gray-300 bg-white mb-2 rounded'>
                         <div className='flex items-center justify-between px-4 py-3 cursor-pointer select-none' onClick={()=> toogleSection(index)}>
                           <div className='flex items-center gap-2'>
-                          <img src={assets.down_arrow_icon} alt="arrow icon" />
+                          <img className={`transform transition-transform ${openSections[index] ? 'rotate-180' : ''}`}
+                           src={assets.down_arrow_icon} alt="arrow icon" />
                           <p className='font-medium md:text-base text-sm'>{chapter.chapterTitle}</p>
                         </div>
                         <p className='text-sm md:text-default'>{chapter.chapterContent.length} lectures - 
