@@ -13,9 +13,9 @@ import userRouter from './routes/userRoutes.js';
 const app = express();
 
 app.use(cors({
-    origin: 'https://lms1-frontend-five.vercel.app',
-    credentials: true,
-  }));
+  origin: 'https://lms1-frontend-five.vercel.app', 
+  credentials: true, 
+}));
 
 // Connect to Databse
 await connectDB();

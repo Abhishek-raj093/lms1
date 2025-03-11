@@ -5,6 +5,12 @@ import { protectEducator } from '../middlewares/authMiddleware.js';
 
 const educatorRouter = express.Router();
 
+educatorRouter.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', 'https://lms1-frontend-five.vercel.app');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    next();
+});
+
 // Add Educator Role
 educatorRouter.get('/update-role', updateRoleToEducator);
 educatorRouter.post('/add-course', upload.single('image'), protectEducator, addCourse)
