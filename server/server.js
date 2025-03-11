@@ -14,6 +14,7 @@ const app = express();
 
 app.use(cors({
   origin: 'https://lms1-frontend-five.vercel.app', 
+  methods: ['GET', 'POST' ,'PUT', 'DELETE'],
   credentials: true, 
 }));
 
