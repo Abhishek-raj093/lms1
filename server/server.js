@@ -12,11 +12,12 @@ import userRouter from './routes/userRoutes.js';
 // Instialize Express
 const app = express();
 
-app.use(cors({
-  origin: 'https://lms1-frontend-five.vercel.app', 
-  methods: ['GET', 'POST' ,'PUT', 'DELETE'],
-  credentials: true, 
-}));
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'https://lms1-frontend-five.vercel.app');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  next();
+});
 
 // Connect to Databse
 await connectDB();
