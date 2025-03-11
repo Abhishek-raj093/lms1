@@ -14,16 +14,14 @@ const app = express();
 
 // ✅ Apply CORS Configuration
 app.use(cors({
-  origin: 'https://lms1-frontend-five.vercel.app',
+  origin: '*', // Allow all origins temporarily
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Authorization', 'Content-Type'],
-  credentials: true, // Allow credentials (cookies, Authorization header)
+  credentials: true,
 }));
 
-// ✅ Explicitly Handle OPTIONS Preflight Requests
-app.options('*', (req, res) => {
-  res.status(204).end(); // Respond with "No Content"
-});
+
+app.options('*', cors());
 
 // Connect to Database
 await connectDB();
