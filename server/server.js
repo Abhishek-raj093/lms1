@@ -12,16 +12,29 @@ import userRouter from './routes/userRoutes.js';
 // Initialize Express
 const app = express();
 
-// ✅ Apply CORS Configuration
+const allowedOrigins = ['https://lms1-frontend-five.vercel.app'];
+
 app.use(cors({
-  origin: '*', // Allow all origins temporarily
+  origin: (origin, callback) => {
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Authorization', 'Content-Type'],
-  credentials: true,
+  credentials: true, // Allow cookies and Authorization headers
 }));
 
-
-app.options('*', cors());
+// ✅ Explicitly Handle Preflight Requests
+app.options('*', (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', 'https://lms1-frontend-five.vercel.app');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.sendStatus(204); // No Content
+});
 
 // Connect to Database
 await connectDB();
