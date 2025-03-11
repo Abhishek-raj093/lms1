@@ -11,7 +11,6 @@ import userRouter from './routes/userRoutes.js';
 
 // Instialize Express
 const app = express();
-
 app.use(cors({
   origin: 'https://lms1-frontend-five.vercel.app/',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Include OPTIONS
@@ -19,6 +18,7 @@ app.use(cors({
   credentials: true,
 }));
 
+app.options('*', cors());
 // Connect to Databse
 await connectDB();
 await connectCloudinary();
