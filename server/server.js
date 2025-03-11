@@ -23,7 +23,6 @@ await connectDB();
 await connectCloudinary();
 
 // Middleware
-app.use(cors());
 app.use(clerkMiddleware())
 
 // Routes
