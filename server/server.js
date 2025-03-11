@@ -9,34 +9,40 @@ import connectCloudinary from './configs/cloudinary.js';
 import courseRouter from './routes/courseRoute.js';
 import userRouter from './routes/userRoutes.js';
 
-// Instialize Express
+// Initialize Express
 const app = express();
+
+// ✅ Apply CORS Configuration
 app.use(cors({
   origin: 'https://lms1-frontend-five.vercel.app',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Include OPTIONS
-  allowedHeaders: ['Authorization', 'Content-Type'], // Allow Authorization header
-  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Authorization', 'Content-Type'],
+  credentials: true, // Allow credentials (cookies, Authorization header)
 }));
 
-app.options('*', cors());
-// Connect to Databse
+// ✅ Explicitly Handle OPTIONS Preflight Requests
+app.options('*', (req, res) => {
+  res.status(204).end(); // Respond with "No Content"
+});
+
+// Connect to Database
 await connectDB();
 await connectCloudinary();
 
 // Middleware
-app.use(clerkMiddleware())
+app.use(express.json()); // Ensure JSON parsing middleware is applied
+app.use(clerkMiddleware());
 
 // Routes
-app.get('/', (req, res) => res.send("API Working"))
-app.post('/clerk', express.json(), clerkWebhooks);
-app.use('/api/educator', express.json(), educatorRouter);
-app.use('/api/course', express.json(), courseRouter);
-app.use('/api/user', express.json(), userRouter);
-app.post('/stripe', express.raw({type: 'application/json'}), stripeWebhooks);
+app.get('/', (req, res) => res.send('API Working'));
+app.post('/clerk', clerkWebhooks);
+app.use('/api/educator', educatorRouter);
+app.use('/api/course', courseRouter);
+app.use('/api/user', userRouter);
+app.post('/stripe', express.raw({ type: 'application/json' }), stripeWebhooks);
 
-// Port
+// Start Server
 const PORT = process.env.PORT || 5000;
-
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`)
-})
+  console.log(`Server is running on port ${PORT}`);
+});
