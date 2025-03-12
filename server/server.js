@@ -14,27 +14,26 @@ const app = express();
 
 const allowedOrigins = ['https://lms1-frontend-five.vercel.app'];
 
-app.use(cors({
-  origin: (origin, callback) => {
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Authorization', 'Content-Type'],
-  credentials: true, // Allow cookies and Authorization headers
-}));
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true)
 
-// ✅ Explicitly Handle Preflight Requests
-app.options('*', (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', 'https://lms1-frontend-five.vercel.app');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type');
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.sendStatus(204); // No Content
-});
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true)
+      } else {
+        console.log(`Origin ${origin} not allowed by CORS`)
+        // Don't throw an error, just don't allow the request
+        callback(null, false)
+      }
+    },
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Authorization", "Content-Type"],
+    credentials: true,
+  }),
+)
+
 
 // Connect to Database
 await connectDB();
