@@ -13,12 +13,8 @@ import userRouter from './routes/userRoutes.js';
 const app = express();
 
 app.use(cors({
-  origin: '*', // This allows requests from any origin
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
+  origin: 'https://lms1-frontend-five.vercel.app',
 }));
-
 
 app.options('*', cors());
 
